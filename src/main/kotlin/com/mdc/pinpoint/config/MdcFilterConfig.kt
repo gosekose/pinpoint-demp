@@ -1,4 +1,4 @@
-package com.mdc.pinpoint.api
+package com.mdc.pinpoint.config
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -26,8 +26,9 @@ class MdcFilterConfig {
                 response: HttpServletResponse,
                 filterChain: FilterChain
             ) {
-                val requestId = UUID.randomUUID().toString()
+                val requestId = UUID.randomUUID().toString().let { it.substring(0, 8) + it.substring(9, 13) }
                 MDC.put("requestId", requestId)
+
                 try {
                     filterChain.doFilter(request, response)
                 } finally {
